@@ -23,11 +23,18 @@ const store = createStore(
 );
 
 
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>, document.getElementById('root')
-);
+function renderToDOM() {
+    if (document.getElementById('root') !== null) {
+        ReactDOM.render(
+            <Provider store={store}>
+                <App />
+            </Provider>, 
+            document.getElementById('root')
+        )
+    }
+}
+renderToDOM();
+export {renderToDOM};
 
 
 

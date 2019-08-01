@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { fetchMusicList } from '../../store/actions';
 import PropTypes from 'prop-types';
 
 class SearchBox extends Component {
@@ -14,8 +11,9 @@ class SearchBox extends Component {
     }
 
     setSearchTerm = (e) => {
+        let value = e.target.value;
         this.setState({
-            searchTerm: e.target.value
+            searchTerm: value
         });
     }
 
@@ -38,21 +36,8 @@ class SearchBox extends Component {
 }
 
 SearchBox.propTypes = {
-
+    fetchMusicList: PropTypes.func
 };
 
-function mapStateToProps(state){
-    console.log('state', state.musicListReducer.musicList)
-    return {
-      musicList: state.musicListReducer.musicList
-    }
-  }
   
-  function mapDispatchToProps(dispatch){
-    return{
-      fetchMusicList: bindActionCreators(fetchMusicList, dispatch),
-    }
-  }
-  
-  
-  export default connect(null, mapDispatchToProps)(SearchBox);
+export default SearchBox;

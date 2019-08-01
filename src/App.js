@@ -1,44 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchMusicList } from './store/actions';
 import SearchBox from './components/search';
+import MusicListItem from './components/musiclist';
+import { fetchMusicList } from './store/actions';
 import './App.css';
 
-class App extends React.Component {
-
-  componentDidMount() {
-    //this.props.fetchMusicList()
-  }
+export class App extends React.Component {
 
   printMusicList = (musicList) => {
-    console.log(musicList.data);
-    return musicList.data.map(item=>{
-      return(
-        <div className="song-card">
-          <div className="song-info">
-            <div className="song-img">
-              <img src={item.artworkUrl100} alt={item.trackName.substring(0,7).concat('...')}/>
-            </div>
-            <div className="song-detail">
-              <div className="song-title">{item.trackName}</div>
-              <div className="more-link"><a href="#">More</a></div>
-            </div>
-          </div>
-        </div>
-      )
-    });
-     
-    
+    return musicList.data.map( (item, index) => <MusicListItem key={index} item={item}/> );
   }
   
   render(){  
       return (
         <div className="App">
-          <SearchBox />
+          <SearchBox fetchMusicList={this.props.fetchMusicList}/>
           <div className="music-list-container">
             {
-              this.props.musicList.loading ? <h1>Loading...</h1> : this.printMusicList(this.props.musicList)
+              this.props.musicList.loading ? <h1 className="loader-text">Loading...</h1> : this.printMusicList(this.props.musicList)
             }
           </div>
         </div>
@@ -47,17 +27,16 @@ class App extends React.Component {
 }
 
 
-function mapStateToProps(state){
+export function mapStateToProps(state){
   return {
     musicList: state.musicListReducer.musicList
   }
 }
 
-function mapDispatchToProps(dispatch){
+export function mapDispatchToProps(dispatch){
   return{
     fetchMusicList: bindActionCreators(fetchMusicList, dispatch),
   }
 }
 
-
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
